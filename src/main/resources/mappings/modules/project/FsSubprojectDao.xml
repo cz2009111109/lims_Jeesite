@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.project.dao.FsSubprojectDao">
+    
+	<sql id="fsSubprojectColumns">
+		a.id AS "id",
+		a.subproject_number AS "subprojectNumber",
+		a.subproject_name AS "subprojectName",
+		a.contractid AS "contractid",
+		a.project AS "fsProject.id",
+		project.project_number As "fsProject.projectNumber",
+		project.project_name As "fsProject.projectName",
+		a.salesperson AS "salesperson",
+		a.platform AS "platform",
+		a.subproject_type AS "subprojectType",
+		a.subproject_price AS "subprojectPrice",
+		a.receivingorder_monney AS "receivingorderMonney",
+		a.subproject_cycle AS "subprojectCycle",
+		a.lims_user_one AS "limsUserOne.id",
+		a.lims_user_two AS "limsUserTwo.id",
+		a.subproject_admin AS "subprojectAdmin.id",
+		a.subproject_state AS "subprojectState",
+		a.pause_start AS "pauseStart",
+		a.pause_end AS "pauseEnd",
+		a.plan_starttime AS "planStarttime",
+		a.plan_endtime AS "planEndtime",
+		a.actual_starttime AS "actualStarttime",
+		a.actual_endtime AS "actualEndtime",
+		a.subproject AS "subproject",
+		a.remarks AS "remarks",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		u12.name AS "limsUserOne.name",
+		u13.name AS "limsUserTwo.name",
+		u14.name AS "subprojectAdmin.name"
+	</sql>
+	
+	<sql id="fsSubprojectJoins">
+		LEFT JOIN sys_user u12 ON u12.id = a.lims_user_one
+		LEFT JOIN sys_user u13 ON u13.id = a.lims_user_two
+		LEFT JOIN sys_user u14 ON u14.id = a.subproject_admin
+		LEFT JOIN fs_project project ON project.id = a.project
+	</sql>
+    
+	<select id="get" resultType="FsSubproject">
+		SELECT 
+			<include refid="fsSubprojectColumns"/>
+		FROM fs_subproject a
+		<include refid="fsSubprojectJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsSubproject">
+		SELECT 
+			<include refid="fsSubprojectColumns"/>
+		FROM fs_subproject a
+		<include refid="fsSubprojectJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="subprojectNumber != null and subprojectNumber != ''">
+				AND a.subproject_number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{subprojectNumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{subprojectNumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{subprojectNumber},'%')</if>
+			</if>
+			<if test="subprojectName != null and subprojectName != ''">
+				AND a.subproject_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{subprojectName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{subprojectName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{subprojectName},'%')</if>
+			</if>
+			<if test="fsProject != null and fsProject.id != null and fsProject.id != ''">
+				AND a.project LIKE 
+					<if test="dbName == 'oracle'">'%'||#{fsProject.id}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{fsProject.id}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{fsProject.id},'%')</if>
+			</if>
+			<if test="salesperson != null and salesperson != ''">
+				AND a.salesperson LIKE 
+					<if test="dbName == 'oracle'">'%'||#{salesperson}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{salesperson}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{salesperson},'%')</if>
+			</if>
+			<if test="platform != null and platform != ''">
+				AND a.platform LIKE 
+					<if test="dbName == 'oracle'">'%'||#{platform}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{platform}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{platform},'%')</if>
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsSubproject">
+		SELECT 
+			<include refid="fsSubprojectColumns"/>
+		FROM fs_subproject a
+		<include refid="fsSubprojectJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_subproject(
+			id,
+			subproject_number,
+			subproject_name,
+			contractid,
+			project,
+			salesperson,
+			platform,
+			subproject_type,
+			subproject_price,
+			receivingorder_monney,
+			subproject_cycle,
+			lims_user_one,
+			lims_user_two,
+			subproject_admin,
+			subproject_state,
+			pause_start,
+			pause_end,
+			plan_starttime,
+			plan_endtime,
+			actual_starttime,
+			actual_endtime,
+			subproject,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{subprojectNumber},
+			#{subprojectName},
+			#{contractid},
+			#{fsProject.id},
+			#{salesperson},
+			#{platform},
+			#{subprojectType},
+			#{subprojectPrice},
+			#{receivingorderMonney},
+			#{subprojectCycle},
+			#{limsUserOne.id},
+			#{limsUserTwo.id},
+			#{subprojectAdmin.id},
+			#{subprojectState},
+			#{pauseStart},
+			#{pauseEnd},
+			#{planStarttime},
+			#{planEndtime},
+			#{actualStarttime},
+			#{actualEndtime},
+			#{subproject},
+			#{remarks},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_subproject SET 	
+			subproject_number = #{subprojectNumber},
+			subproject_name = #{subprojectName},
+			contractid = #{contractid},
+			project = #{fsProject.id},
+			salesperson = #{salesperson},
+			platform = #{platform},
+			subproject_type = #{subprojectType},
+			subproject_price = #{subprojectPrice},
+			receivingorder_monney = #{receivingorderMonney},
+			subproject_cycle = #{subprojectCycle},
+			lims_user_one = #{limsUserOne.id},
+			lims_user_two = #{limsUserTwo.id},
+			subproject_admin = #{subprojectAdmin.id},
+			subproject_state = #{subprojectState},
+			pause_start = #{pauseStart},
+			pause_end = #{pauseEnd},
+			plan_starttime = #{planStarttime},
+			plan_endtime = #{planEndtime},
+			actual_starttime = #{actualStarttime},
+			actual_endtime = #{actualEndtime},
+			subproject = #{subproject},
+			remarks = #{remarks},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_subproject SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_subproject
+	</select>
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.good.dao.FsGoodDao">
+    
+	<sql id="fsGoodColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.brand AS "brand",
+		a.itemnumber AS "itemnumber",
+		a.catalogprice AS "catalogprice",
+		a.actualprice AS "actualprice",
+		a.state AS "state",
+		a.unitnum AS "unitnum",
+		a.unit AS "unit",
+		a.factory AS "factory",
+		a.function AS "function",
+		a.description AS "description",
+		a.category AS "category",
+		a.cooperation AS "fsGoodCooperation.id",
+		b.name AS "fsGoodCooperation.name",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="fsGoodJoins">
+		left join fs_good_cooperation b on  a.cooperation =b.id
+	</sql>
+    
+	<select id="get" resultType="FsGood">
+		SELECT 
+			<include refid="fsGoodColumns"/>
+		FROM fs_good a
+		<include refid="fsGoodJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsGood">
+		SELECT 
+			<include refid="fsGoodColumns"/>
+		FROM fs_good a
+		<include refid="fsGoodJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="brand != null and brand != ''">
+				AND a.brand like
+                <if test="dbName == 'oracle'">'%'||#{brand}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{brand}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{brand},'%')</if>
+			</if>
+			<if test="itemnumber != null and itemnumber != ''">
+				AND a.itemnumber = #{itemnumber}
+			</if>
+			<if test="unitnum != null and unitnum != ''">
+				AND a.unitnum = #{unitnum}
+			</if>
+			<if test="unit != null and unit != ''">
+				AND a.unit = #{unit}
+			</if>
+			<if test="factory != null and factory != ''">
+				AND a.factory = #{factory}
+			</if>
+			<if test="function != null and function != ''">
+				AND a.function = #{function}
+			</if>
+			<if test="description != null and description != ''">
+				AND a.description = #{description}
+			</if>
+			<if test="fsGoodCooperation != null and fsGoodCooperation.id != null and fsGoodCooperation.id != ''">
+				AND a.cooperation = #{fsGoodCooperation.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsGood">
+		SELECT 
+			<include refid="fsGoodColumns"/>
+		FROM fs_good a
+		<include refid="fsGoodJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_good(
+			id,
+			name,
+			brand,
+			itemnumber,
+			catalogprice,
+			actualprice,
+			state,
+			unitnum,
+			unit,
+			factory,
+			function,
+			description,
+			category,
+			cooperation,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{brand},
+			#{itemnumber},
+			#{catalogprice},
+			#{actualprice},
+			#{state},
+			#{unitnum},
+			#{unit},
+			#{factory},
+			#{function},
+			#{description},
+			#{category},
+			#{fsGoodCooperation.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_good SET 	
+			name = #{name},
+			brand = #{brand},
+			itemnumber = #{itemnumber},
+			catalogprice = #{catalogprice},
+			actualprice = #{actualprice},
+			state = #{state},
+			unitnum = #{unitnum},
+			unit = #{unit},
+			factory = #{factory},
+			function = #{function},
+			description = #{description},
+			category = #{category},
+			cooperation = #{fsGoodCooperation.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_good SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_good
+	</select>
+</mapper>

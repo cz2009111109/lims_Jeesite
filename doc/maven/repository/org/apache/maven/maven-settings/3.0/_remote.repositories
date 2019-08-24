@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Sat Jul 14 21:56:30 CST 2018
+maven-settings-3.0.pom>jeesite-repos=
+maven-settings-3.0.jar>central=
+maven-settings-3.0.jar>jeesite-repos=
+maven-settings-3.0.pom>central=

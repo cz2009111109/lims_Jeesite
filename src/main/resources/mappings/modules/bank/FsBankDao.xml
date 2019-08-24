@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bank.dao.FsBankDao">
+    
+	<sql id="fsBankColumns">
+		a.id AS "id",
+		a.bankaccount AS "bankaccount",
+		a.company AS "company",
+		a.open_bank AS "openBank",
+		a.money AS "money",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="fsBankJoins">
+	</sql>
+    
+	<select id="get" resultType="FsBank">
+		SELECT 
+			<include refid="fsBankColumns"/>
+		FROM fs_bank a
+		<include refid="fsBankJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsBank">
+		SELECT 
+			<include refid="fsBankColumns"/>
+		FROM fs_bank a
+		<include refid="fsBankJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="bankaccount != null and bankaccount != ''">
+				AND a.bankaccount LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bankaccount}</if>
+					<if test="dbName == 'mssql'">'%'+#{bankaccount}</if>
+					<if test="dbName == 'mysql'">concat('%',#{bankaccount})</if>
+			</if>
+			<if test="company != null and company != ''">
+				AND a.company LIKE 
+					<if test="dbName == 'oracle'">'%'||#{company}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{company}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{company},'%')</if>
+			</if>
+			<if test="openBank != null and openBank != ''">
+				AND a.open_bank LIKE 
+					<if test="dbName == 'oracle'">'%'||#{openBank}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{openBank}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{openBank},'%')</if>
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsBank">
+		SELECT 
+			<include refid="fsBankColumns"/>
+		FROM fs_bank a
+		<include refid="fsBankJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_bank(
+			id,
+			bankaccount,
+			company,
+			open_bank,
+			money,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{bankaccount},
+			#{company},
+			#{openBank},
+			#{money},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_bank SET 	
+			bankaccount = #{bankaccount},
+			company = #{company},
+			open_bank = #{openBank},
+			money = #{money},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_bank SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_bank
+	</select>
+</mapper>

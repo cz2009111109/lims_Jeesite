@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.specimen.dao.FsSpecimenDao">
+    
+	<sql id="fsSpecimenColumns">
+		a.id AS "id",
+		a.contractid AS "contractid",
+		a.specimenin AS "fsSpecimenin.id",
+		a.contractnumber AS "contractnumber",
+		a.contractname AS "contractname",
+		a.customer_id AS "customerId",
+		a.customer_name AS "customerName",
+		a.customer_email AS "customerEmail",
+		a.customer_phone AS "customerPhone",
+		a.sample_type AS "sampleType",
+		a.sampling_name AS "samplingName",
+		a.sampling_phone AS "samplingPhone",
+		a.sampling_email AS "samplingEmail",
+		a.sampling_state AS "samplingState",
+		a.sample_species AS "sampleSpecies",
+		a.sample_target AS "sampleTarget",
+		a.sampling_beforestate AS "samplingBeforestate",
+		a.sample_serialnumber AS "sampleSerialnumber",
+		a.sample_name AS "sampleName",
+		a.species_name AS "speciesName",
+		a.project_type AS "projectType",
+		a.tubes AS "tubes",
+		a.unit AS "unit",
+		a.param1 AS "param1",
+		a.param2 AS "param2",
+		a.param3 AS "param3",
+		a.param4 AS "param4",
+		a.param5 AS "param5",
+		a.param6 AS "param6",
+		a.param7 AS "param7",
+		a.param8 AS "param8",
+		a.param9 AS "param9",
+		a.param10 AS "param10",
+		a.state AS "state",
+		a.extraction_description AS "extractionDescription",
+		a.storehouse AS "fsStorehouse.id",
+		a.receive_user AS "user.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u37.name AS "user.name"
+	</sql>
+	
+	<sql id="fsSpecimenJoins">
+		LEFT JOIN sys_user u37 ON u37.id = a.receive_user
+		LEFT  JOIN  fs_specimenin  fs on fs.id = a.specimenin
+		LEFT  JOIN  fs_storehouse  store on store.id = a.storehouse
+	</sql>
+    
+	<select id="get" resultType="FsSpecimen">
+		SELECT 
+			<include refid="fsSpecimenColumns"/>
+		FROM fs_specimen a
+		<include refid="fsSpecimenJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsSpecimen">
+		SELECT 
+			<include refid="fsSpecimenColumns"/>
+		FROM fs_specimen a
+		<include refid="fsSpecimenJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="contractnumber != null and contractnumber != ''">
+				AND a.contractnumber LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractnumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractnumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractnumber},'%')</if>
+			</if>
+			<if test="contractname != null and contractname != ''">
+				AND a.contractname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractname},'%')</if>
+			</if>
+			<if test="customerName != null and customerName != ''">
+				AND a.customer_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{customerName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{customerName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{customerName},'%')</if>
+			</if>
+			<if test="sampleType != null and sampleType != ''">
+				AND a.sample_type = #{sampleType}
+			</if>
+			<if test="samplingName != null and samplingName != ''">
+				AND a.sampling_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{samplingName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{samplingName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{samplingName},'%')</if>
+			</if>
+			<if test="sampleSpecies != null and sampleSpecies != ''">
+				AND a.sample_species = #{sampleSpecies}
+			</if>
+			<if test="projectType != null and projectType != ''">
+				AND a.project_type = #{projectType}
+			</if>
+			<if test="fsStorehouse != null and fsStorehouse.id != null and fsStorehouse.id != ''">
+				AND a.storehouse = #{fsStorehouse.id}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.receive_user = #{user.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsSpecimen">
+		SELECT 
+			<include refid="fsSpecimenColumns"/>
+		FROM fs_specimen a
+		<include refid="fsSpecimenJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_specimen(
+			id,
+			contractid,
+			specimenin,
+			contractnumber,
+			contractname,
+			customer_id,
+			customer_name,
+			customer_email,
+			customer_phone,
+			sample_type,
+			sampling_name,
+			sampling_phone,
+			sampling_email,
+			sampling_state,
+			sample_species,
+			sample_target,
+			sampling_beforestate,
+			sample_serialnumber,
+			sample_name,
+			species_name,
+			project_type,
+			tubes,
+			unit,
+			param1,
+			param2,
+			param3,
+			param4,
+			param5,
+			param6,
+			param7,
+			param8,
+			param9,
+			param10,
+			state,
+			extraction_description,
+			storehouse,
+			receive_user,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{contractid},
+			#{fsSpecimenin.id},
+			#{contractnumber},
+			#{contractname},
+			#{customerId},
+			#{customerName},
+			#{customerEmail},
+			#{customerPhone},
+			#{sampleType},
+			#{samplingName},
+			#{samplingPhone},
+			#{samplingEmail},
+			#{samplingState},
+			#{sampleSpecies},
+			#{sampleTarget},
+			#{samplingBeforestate},
+			#{sampleSerialnumber},
+			#{sampleName},
+			#{speciesName},
+			#{projectType},
+			#{tubes},
+			#{unit},
+			#{param1},
+			#{param2},
+			#{param3},
+			#{param4},
+			#{param5},
+			#{param6},
+			#{param7},
+			#{param8},
+			#{param9},
+			#{param10},
+			#{state},
+			#{extractionDescription},
+			#{fsStorehouse.id},
+			#{user.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_specimen SET 	
+			contractid = #{contractid},
+			specimenin = #{fsSpecimenin.id},
+			contractnumber = #{contractnumber},
+			contractname = #{contractname},
+			customer_id = #{customerId},
+			customer_name = #{customerName},
+			customer_email = #{customerEmail},
+			customer_phone = #{customerPhone},
+			sample_type = #{sampleType},
+			sampling_name = #{samplingName},
+			sampling_phone = #{samplingPhone},
+			sampling_email = #{samplingEmail},
+			sampling_state = #{samplingState},
+			sample_species = #{sampleSpecies},
+			sample_target = #{sampleTarget},
+			sampling_beforestate = #{samplingBeforestate},
+			sample_serialnumber = #{sampleSerialnumber},
+			sample_name = #{sampleName},
+			species_name = #{speciesName},
+			project_type = #{projectType},
+			tubes = #{tubes},
+			unit = #{unit},
+			param1 = #{param1},
+			param2 = #{param2},
+			param3 = #{param3},
+			param4 = #{param4},
+			param5 = #{param5},
+			param6 = #{param6},
+			param7 = #{param7},
+			param8 = #{param8},
+			param9 = #{param9},
+			param10 = #{param10},
+			state = #{state},
+			extraction_description = #{extractionDescription},
+			storehouse = #{fsStorehouse.id},
+			receive_user = #{user.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_specimen SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_specimen
+	</select>
+</mapper>

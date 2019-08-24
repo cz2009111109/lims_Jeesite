@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.task.dao.FsExtractionDetectionTaskDao">
+    
+	<sql id="fsExtractionDetectionTaskColumns">
+		a.id AS "id",
+		a.number AS "number",
+		a.customer AS "customer",
+		a.project AS "project.id",
+		a.subproject AS "subproject.id",
+		a.chief_officer AS "chiefOfficer.id",
+		a.lab_officer AS "labOfficer.id",
+		a.infomation_officer AS "infomationOfficer.id",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.file AS "file",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u6.name AS "chiefOfficer.name",
+		u7.name AS "labOfficer.name",
+		u8.name AS "infomationOfficer.name"
+	</sql>
+	
+	<sql id="fsExtractionDetectionTaskJoins">
+		LEFT JOIN sys_user u6 ON u6.id = a.chief_officer
+		LEFT JOIN sys_user u7 ON u7.id = a.lab_officer
+		LEFT JOIN sys_user u8 ON u8.id = a.infomation_officer
+	</sql>
+    
+	<select id="get" resultType="FsExtractionDetectionTask">
+		SELECT 
+			<include refid="fsExtractionDetectionTaskColumns"/>
+		FROM fs_extraction_detection_task a
+		<include refid="fsExtractionDetectionTaskJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsExtractionDetectionTask">
+		SELECT 
+			<include refid="fsExtractionDetectionTaskColumns"/>
+		FROM fs_extraction_detection_task a
+		<include refid="fsExtractionDetectionTaskJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="number != null and number != ''">
+				AND a.number = #{number}
+			</if>
+			<if test="customer != null and customer != ''">
+				AND a.customer = #{customer}
+			</if>
+			<if test="project != null and project.id != null and project.id != ''">
+				AND a.project = #{project.id}
+			</if>
+			<if test="subproject != null and subproject.id != null and subproject.id != ''">
+				AND a.subproject = #{subproject.id}
+			</if>
+			<if test="chiefOfficer != null and chiefOfficer.id != null and chiefOfficer.id != ''">
+				AND a.chief_officer = #{chiefOfficer.id}
+			</if>
+			<if test="labOfficer != null and labOfficer.id != null and labOfficer.id != ''">
+				AND a.lab_officer = #{labOfficer.id}
+			</if>
+			<if test="infomationOfficer != null and infomationOfficer.id != null and infomationOfficer.id != ''">
+				AND a.infomation_officer = #{infomationOfficer.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsExtractionDetectionTask">
+		SELECT 
+			<include refid="fsExtractionDetectionTaskColumns"/>
+		FROM fs_extraction_detection_task a
+		<include refid="fsExtractionDetectionTaskJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_extraction_detection_task(
+			id,
+			number,
+			customer,
+			project,
+			subproject,
+			chief_officer,
+			lab_officer,
+			infomation_officer,
+			start_time,
+			end_time,
+			file,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{number},
+			#{customer},
+			#{project.id},
+			#{subproject.id},
+			#{chiefOfficer.id},
+			#{labOfficer.id},
+			#{infomationOfficer.id},
+			#{startTime},
+			#{endTime},
+			#{file},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_extraction_detection_task SET 	
+			number = #{number},
+			customer = #{customer},
+			project = #{project.id},
+			subproject = #{subproject.id},
+			chief_officer = #{chiefOfficer.id},
+			lab_officer = #{labOfficer.id},
+			infomation_officer = #{infomationOfficer.id},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			file = #{file},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_extraction_detection_task SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_extraction_detection_task
+	</select>
+</mapper>

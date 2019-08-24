@@ -1,0 +1,5 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Fri Jul 13 10:39:27 CST 2018
+@default-jeesite-repos-http\://maven.aliyun.com/nexus/content/groups/public/.lastUpdated=1531449564990
+http\://maven.aliyun.com/nexus/content/groups/public/.error=Could not transfer artifact commons-io\:commons-io\:pom\:1.1 from/to jeesite-repos (http\://maven.aliyun.com/nexus/content/groups/public)\: Failed to transfer http\://maven.aliyun.com/nexus/content/groups/public/commons-io/commons-io/1.1/commons-io-1.1.pom. Error code 504, Gateway Time-out
+https\://repo.maven.apache.org/maven2/.lastUpdated=1531449567488

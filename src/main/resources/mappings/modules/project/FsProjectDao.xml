@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.project.dao.FsProjectDao">
+    
+	<sql id="fsProjectColumns">
+		a.id AS "id",
+		a.project_number AS "projectNumber",
+		a.project_name AS "projectName",
+		a.contract_id AS "contractId",
+		a.contract_number AS "contractNumber",
+		a.contract_name AS "contractName",
+		a.salesperson AS "salesperson.id",
+		a.salesperson_name AS "salespersonName",
+		a.platform AS "platform",
+		a.project_type AS "projectType",
+		a.contract_price AS "contractPrice",
+		a.receivingorder_money AS "receivingorderMoney",
+		a.project_cycle AS "projectCycle",
+		a.project_admin AS "projectAdmin.id",
+		a.project_state AS "projectState",
+		a.project_state_changetime AS "projectStateChangetime",
+		a.project_success_time AS "projectSuccessTime",
+		a.money AS "money",
+		a.money_advance AS "moneyAdvance",
+		a.money_mid AS "moneyMid",
+		a.money_final AS "moneyFinal",
+		a.arrive_time AS "arriveTime",
+		a.start_in_advance AS "startInAdvance",
+		a.start_in_advance_time AS "startInAdvanceTime",
+		a.pause_start AS "pauseStart",
+		a.pause_end AS "pauseEnd",
+		a.plan_starttime AS "planStarttime",
+		a.plan_endtime AS "planEndtime",
+		a.actual_starttime AS "actualStarttime",
+		a.actual_endtime AS "actualEndtime",
+		a.projectfile AS "projectfile",
+		a.remarks AS "remarks",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		u14.name AS "projectAdmin.name"
+	</sql>
+	
+	<sql id="fsProjectJoins">
+		LEFT JOIN sys_user u14 ON u14.id = a.project_admin
+	</sql>
+    
+	<select id="get" resultType="FsProject">
+		SELECT 
+			<include refid="fsProjectColumns"/>
+		FROM fs_project a
+		<include refid="fsProjectJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsProject">
+		SELECT 
+			<include refid="fsProjectColumns"/>
+		FROM fs_project a
+		<include refid="fsProjectJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="projectNumber != null and projectNumber != ''">
+				AND a.project_number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{projectNumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{projectNumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{projectNumber},'%')</if>
+			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{projectName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{projectName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{projectName},'%')</if>
+			</if>
+			<if test="contractId != null and contractId != ''">
+				AND a.contract_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractId},'%')</if>
+			</if>
+			<if test="contractNumber != null and contractNumber != ''">
+				AND a.contract_number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractNumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractNumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractNumber},'%')</if>
+			</if>
+			<if test="contractName != null and contractName != ''">
+				AND a.contract_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contractName},'%')</if>
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsProject">
+		SELECT 
+			<include refid="fsProjectColumns"/>
+		FROM fs_project a
+		<include refid="fsProjectJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_project(
+			id,
+			project_number,
+			project_name,
+			contract_id,
+			contract_number,
+			contract_name,
+			salesperson,
+			salesperson_name,
+			platform,
+			project_type,
+			contract_price,
+			receivingorder_money,
+			project_cycle,
+			project_admin,
+			project_state,
+			project_state_changetime,
+			project_success_time,
+			money,
+			money_advance,
+			money_mid,
+			money_final,
+			arrive_time,
+			start_in_advance,
+			start_in_advance_time,
+			pause_start,
+			pause_end,
+			plan_starttime,
+			plan_endtime,
+			actual_starttime,
+			actual_endtime,
+			projectfile,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{projectNumber},
+			#{projectName},
+			#{contractId},
+			#{contractNumber},
+			#{contractName},
+			#{salesperson.id},
+			#{salesperson.name},
+			#{platform},
+			#{projectType},
+			#{contractPrice},
+			#{receivingorderMoney},
+			#{projectCycle},
+			#{projectAdmin.id},
+			#{projectState},
+			#{projectStateChangetime},
+			#{projectSuccessTime},
+			#{money},
+			#{moneyAdvance},
+			#{moneyMid},
+			#{moneyFinal},
+			#{arriveTime},
+			#{startInAdvance},
+			#{startInAdvanceTime},
+			#{pauseStart},
+			#{pauseEnd},
+			#{planStarttime},
+			#{planEndtime},
+			#{actualStarttime},
+			#{actualEndtime},
+			#{projectfile},
+			#{remarks},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_project SET 	
+			project_number = #{projectNumber},
+			project_name = #{projectName},
+			contract_id = #{contractId},
+			contract_number = #{contractNumber},
+			contract_name = #{contractName},
+			salesperson = #{salesperson.id},
+			salesperson_name = #{salesperson.name},
+			platform = #{platform},
+			project_type = #{projectType},
+			contract_price = #{contractPrice},
+			receivingorder_money = #{receivingorderMoney},
+			project_cycle = #{projectCycle},
+			project_admin = #{projectAdmin.id},
+			project_state = #{projectState},
+			project_state_changetime = #{projectStateChangetime},
+			project_success_time = #{projectSuccessTime},
+			money = #{money},
+			money_advance = #{moneyAdvance},
+			money_mid = #{moneyMid},
+			money_final = #{moneyFinal},
+			arrive_time = #{arriveTime},
+			start_in_advance = #{startInAdvance},
+			start_in_advance_time = #{startInAdvanceTime},
+			pause_start = #{pauseStart},
+			pause_end = #{pauseEnd},
+			plan_starttime = #{planStarttime},
+			plan_endtime = #{planEndtime},
+			actual_starttime = #{actualStarttime},
+			actual_endtime = #{actualEndtime},
+			projectfile = #{projectfile},
+			remarks = #{remarks},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_project SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_project
+	</select>
+</mapper>
