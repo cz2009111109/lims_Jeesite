@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.material.dao.FsMaterialSupplierinfoDao">
+    
+	<sql id="fsMaterialSupplierinfoColumns">
+		a.id AS "id",
+		a.supp_code AS "suppCode",
+		a.name AS "name",
+		a.supp_abbre AS "suppAbbre",
+		a.personname AS "personname",
+		a.mobilephonne AS "mobilephonne",
+		a.telephone AS "telephone",
+		a.email AS "email",
+		a.address AS "address",
+		a.bank AS "bank.id",
+		b.open_bank AS "fsBank.openBank",
+		a.remarks AS "remarks",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="fsMaterialSupplierinfoJoins">
+		left join fs_bank b  on a.bank=b.id
+	</sql>
+    
+	<select id="get" resultType="FsMaterialSupplierinfo">
+		SELECT 
+			<include refid="fsMaterialSupplierinfoColumns"/>
+		FROM fs_material_supplierinfo a
+		<include refid="fsMaterialSupplierinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FsMaterialSupplierinfo">
+		SELECT 
+			<include refid="fsMaterialSupplierinfoColumns"/>
+		FROM fs_material_supplierinfo a
+		<include refid="fsMaterialSupplierinfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="suppCode != null and suppCode != ''">
+				AND a.supp_code LIKE 
+					<if test="dbName == 'oracle'">'%'||#{suppCode}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{suppCode}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{suppCode},'%')</if>
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="personname != null and personname != ''">
+				AND a.personname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{personname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{personname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{personname},'%')</if>
+			</if>
+			<if test="mobilephonne != null and mobilephonne != ''">
+				AND a.mobilephonne LIKE 
+					<if test="dbName == 'oracle'">'%'||#{mobilephonne}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{mobilephonne}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{mobilephonne},'%')</if>
+			</if>
+			<if test="telephone != null and telephone != ''">
+				AND a.telephone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{telephone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{telephone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{telephone},'%')</if>
+			</if>
+			<if test="email != null and email != ''">
+				AND a.email LIKE 
+					<if test="dbName == 'oracle'">'%'||#{email}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{email}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{email},'%')</if>
+			</if>
+			<if test="address != null and address != ''">
+				AND a.address LIKE 
+					<if test="dbName == 'oracle'">'%'||#{address}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FsMaterialSupplierinfo">
+		SELECT 
+			<include refid="fsMaterialSupplierinfoColumns"/>
+		FROM fs_material_supplierinfo a
+		<include refid="fsMaterialSupplierinfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO fs_material_supplierinfo(
+			id,
+			supp_code,
+			name,
+			supp_abbre,
+			personname,
+			mobilephonne,
+			telephone,
+			email,
+			address,
+			bank,
+			remarks,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{suppCode},
+			#{name},
+			#{suppAbbre},
+			#{personname},
+			#{mobilephonne},
+			#{telephone},
+			#{email},
+			#{address},
+			#{bank.id},
+			#{remarks},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE fs_material_supplierinfo SET 	
+			supp_code = #{suppCode},
+			name = #{name},
+			supp_abbre = #{suppAbbre},
+			personname = #{personname},
+			mobilephonne = #{mobilephonne},
+			telephone = #{telephone},
+			email = #{email},
+			address = #{address},
+			bank = #{bank.id},
+			remarks = #{remarks},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE fs_material_supplierinfo SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxid" resultType="long">
+		 select coalesce(max(CAST(id as DECIMAL)),0)+1
+		FROM fs_material_supplierinfo
+	</select>
+</mapper>
