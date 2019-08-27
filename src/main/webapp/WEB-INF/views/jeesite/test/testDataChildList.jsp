@@ -6,7 +6,12 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+            $("input[id='all']").change(function(){
+
+                $("#contentTable tbody td input").each(function(){
+                    $(this).attr("checked", !$(this).attr("checked"));
+                });
+            });
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -36,7 +41,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th></th>
+				<th><input id="all" type="checkbox" name="" />全选</th>
 				<th>名称</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
@@ -47,7 +52,7 @@
 		<c:forEach items="${page.list}" var="testDataChild">
 			<tr>
 				<td>
-
+					<input type="checkbox" name="id" value="${testDataChild.id}" />
 				</td>
 				<td><a href="${ctx}/test/testDataChild/form?id=${testDataChild.id}">
 					${testDataChild.name}

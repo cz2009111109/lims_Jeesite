@@ -53,7 +53,7 @@
 		<dict value="com.thinkgem.jeesite.modules.project.entity.FsSubproject" label="fsSubproject"/>
 		<dict value="com.thinkgem.jeesite.modules.good.entity.FsGoodCategory" label="FsGoodCategory"/>
 		<dict value="com.thinkgem.jeesite.modules.cooperation.entity.FsGoodCooperation" label="fsGoodCooperation"/>
-		<dict value="com.thinkgem.jeesite.modules.storehouse.entity.FsStorehouse" label="fsStorehouse"/>
+		<dict value="com.thinkgem.jeesite.modules.material.entity.FsMaterialWarehouseinfo" label="fsMaterialWarehouseinfo"/>
 		<dict value="com.thinkgem.jeesite.modules.specimen.entity.FsSpecimenin" label="fsSpecimenin"/>
 		<dict value="com.thinkgem.jeesite.modules.task.entity.FsExtractionDetectionTask" label="fsExtractionDetectionTask"/>
 		<dict value="This" label="ThisObj" description="生成当前对象"/>

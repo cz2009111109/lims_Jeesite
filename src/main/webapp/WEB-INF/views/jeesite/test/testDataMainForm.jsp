@@ -19,10 +19,6 @@
                 $.jBox($("#importBox").html(), {title:"导入数据", buttons:{"确定":"ok","关闭":true},
                     bottomText:"导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！",submit:function (v,h,f) {
 					if(v=="ok"){
-					    console.log("点击确认")
-                        console.log(h.find("#uploadFile"))
-                        console.log(h.find("#uploadFile").val())
-                        console.log(h.find("#uploadFile")[0].files[0])
                         var formData = new FormData();
                         formData.append("file",h.find("#uploadFile")[0].files[0]);
                         $.ajax({
@@ -45,14 +41,25 @@
                                 console.log(response);
                             }
 						});
-                        console.log(formData)
-                        console.log(h)
+
 
 					}
                 }})
             });
             $("#tableSelect").click(function () {
-                $.jBox("iframe:${ctx}/test/testData/",{title:"选择数据", buttons:{"确定":"ok","关闭":true}});
+                $.jBox("iframe:${ctx}/test/testDataChild",{title:"选择数据",width:800, height:380, buttons:{"确定":"ok","关闭":true},
+					submit:function (v,h,f) {
+                        if(v=="ok"){
+                            var table=h.find("iframe")[0].contentWindow.contentTable;
+                            var table=$(table)
+							var children=[];
+                            table.find("tbody").find('input:checkbox:checked').map(function (index,ele) {
+                                children.push(ele.value)
+                            })
+							console.log(children)
+						}
+
+                    }})
             })
 			//$("#name").focus();
 			$("#inputForm").validate({

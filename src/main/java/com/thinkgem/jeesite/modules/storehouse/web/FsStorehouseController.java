@@ -104,8 +104,9 @@ public class FsStorehouseController extends BaseController {
 	}
 
 
-	@ResponseBody
+
 	@RequestMapping(value = "treeData")
+	@ResponseBody
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<FsStorehouse> list = fsStorehouseService.findList(new FsStorehouse());
