@@ -97,7 +97,7 @@ public class TestDataMainController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(TestDataMain testDataMain, RedirectAttributes redirectAttributes) {
 		testDataMainService.delete(testDataMain);
-		addMessage(redirectAttributes, "删除主子表成功");
+		addMessage(redirectAttributes, "删除主表成功");
 		return "redirect:"+Global.getAdminPath()+"/test/testDataMain/?repage";
 	}
 

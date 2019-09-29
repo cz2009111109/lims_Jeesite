@@ -93,6 +93,7 @@
 			<label class="control-label">银行账号：</label>
 			<div class="controls">
 				<form:select path="bank.id" class="input-xlarge" >
+					<form:option value="" label="请选择" />
 					<form:options items="${fsBanks}" itemLabel="openBank" itemValue="id" htmlEscape="false" />
 				</form:select>
 			</div>

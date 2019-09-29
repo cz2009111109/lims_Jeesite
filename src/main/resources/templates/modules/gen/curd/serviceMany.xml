@@ -10,6 +10,7 @@
 package ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,8 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 							</#if>
 						</#list>
 					</#if>
-					${c.className?uncap_first}.preInsert();
+					Long id=${c.className?uncap_first}Dao.getMaxid();
+					${c.className?uncap_first}.preInsertMaxId(id.toString());
 					${c.className?uncap_first}Dao.insert(${c.className?uncap_first});
 				}else{
 					${c.className?uncap_first}.preUpdate();
@@ -97,7 +99,18 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 		${c.className?uncap_first}Dao.delete(new ${c.className?cap_first}(${className}));
 	</#list>
 	}
-	
+
+	public List<${ClassName}> findByIds(String[] ids){
+		return  dao.findByIds(ids);
+	}
+
+	public List<${ClassName}> findByIds(Set<String> ids){
+		return  dao.findByIdsSet(ids);
+	}
+
+	public List<${ClassName}> findByIds(List<String> ids){
+		return  dao.findByIdsList(ids);
+	}
 }]]>
 	</content>
 </template>

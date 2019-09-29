@@ -113,8 +113,8 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 				ORDER BY a.create_date ASC
 					</#if>
 				<#else>
-					<#if table.updateDateExists>
-				ORDER BY a.update_date DESC
+					<#if table.createDateExists>
+				ORDER BY a.create_date DESC
 					</#if>
 				</#if>
 			</otherwise>
@@ -139,8 +139,8 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 				ORDER BY a.create_date ASC
 					</#if>
 				<#else>
-					<#if table.updateDateExists>
-				ORDER BY a.update_date DESC
+					<#if table.createDateExists>
+				ORDER BY a.create_date DESC
 					</#if>
 				</#if>
 			</otherwise>
@@ -211,6 +211,41 @@ ${updateField?substring(0, updateField?last_index_of(","))}
 		 select coalesce(max(CAST(id as DECIMAL)),0)+1
 		FROM ${table.name}
 	</select>
+
+	<select id="findByIds" resultType="${ClassName}">
+		SELECT
+			<include refid="${className}Columns" />
+		FROM ${table.name} a
+		<include refid="${className}Joins"/>
+		WHERE a.id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			${"#"}{item}
+		</foreach>
+	</select>
+
+	<select id="findByIdsSet" resultType="${ClassName}">
+		SELECT
+		<include refid="${className}Columns" />
+		FROM ${table.name}  a
+		<include refid="${className}Joins"/>
+		WHERE a.id in
+		<foreach item="item" index="index" collection="set" open="(" separator="," close=")">
+			${"#"}{item}
+		</foreach>
+	</select>
+
+	<select id="findByIdsList" resultType="${ClassName}">
+		SELECT
+		<include refid="${className}Columns" />
+		FROM ${table.name}  a
+		<include refid="${className}Joins"/>
+		WHERE a.id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			${"#"}{item}
+		</foreach>
+	</select>
+
+
 </mapper>]]>
 	</content>
 </template>

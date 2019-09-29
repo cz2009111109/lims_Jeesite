@@ -10,6 +10,7 @@
 package ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
+
 
 /**
  * ${functionName}Service
@@ -65,6 +67,18 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 	@Override
 	public int update(${ClassName} ${className}) {
 		return	super.update(${className});
+	}
+
+	public List<${ClassName}> findByIds(String[] ids){
+		return  dao.findByIds(ids);
+	}
+
+	public List<${ClassName}> findByIds(Set<String> ids){
+		return  dao.findByIdsSet(ids);
+	}
+
+	public List<${ClassName}> findByIds(List<String> ids){
+		return  dao.findByIdsList(ids);
 	}
 
 }]]>

@@ -9,6 +9,11 @@
  */
 package ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>;
 
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
@@ -20,7 +25,11 @@ import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleN
  */
 @MyBatisDao
 public interface ${ClassName}Dao extends CrudDao<${ClassName}> {
-	
+	public List<${ClassName}> findByIds(String[] ids);
+
+    public List<${ClassName}> findByIdsSet(@Param("set") Set<String> set);
+
+    public List<${ClassName}> findByIdsList(List<String> ids);
 }]]>
 	</content>
 </template>

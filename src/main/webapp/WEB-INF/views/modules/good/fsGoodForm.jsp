@@ -85,8 +85,10 @@
 		<div class="control-group">
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<form:input path="unit" htmlEscape="false" maxlength="10" class="input-xlarge "/>
-
+				<form:select path="unit" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options  items="${fns:getDictList('material_unit')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -123,8 +125,9 @@
 		<div class="control-group">
 			<label class="control-label">供应商：</label>
 			<div class="controls">
-				<form:select path="fsGoodCooperation.id" class="input-xlarge" >
-					<form:options items="${fsGoodCooperations}" itemLabel="name" itemValue="id" htmlEscape="false" />
+				<form:select path="supplierinfo.id" class="input-xlarge" >
+					<form:option value="" label="请选择"/>
+					<form:options items="${supplierinfos}" itemLabel="name" itemValue="id" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>

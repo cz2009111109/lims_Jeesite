@@ -125,9 +125,9 @@
 										<input type="hidden" name="columnList[${vs.index}].jdbcType" value="${column.jdbcType}"/>${column.jdbcType}
 									</td>
 									<td>
-										<select name="columnList[${vs.index}].javaType" class="required input-mini" style="width:85px;*width:75px">
+										<select name="columnList[${vs.index}].javaType" class="required input-mini" style="width:250px;*width:240px">
 											<c:forEach items="${config.javaTypeList}" var="dict">
-												<option value="${dict.value}" ${dict.value==column.javaType?'selected':''} title="${dict.description}">${dict.label}</option>
+												<option value="${dict.value}" ${dict.value==column.javaType?'selected':''} title="${dict.description}" >${dict.label}</option>
 											</c:forEach>
 										</select>
 									</td>

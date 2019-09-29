@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.good.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +49,16 @@ public class FsGoodService extends CrudService<FsGoodDao, FsGood> {
 	public void delete(FsGood fsGood) {
 		super.delete(fsGood);
 	}
-	
+
+	public List<FsGood> findByIds(String[] ids){
+		return  dao.findByIds(ids);
+	}
+
+	public List<FsGood> findByIds(Set<String> ids){
+		return  dao.findByIdsSet(ids);
+	}
+
+	public List<FsGood> findByIds(List<String> ids){
+		return  dao.findByIdsList(ids);
+	}
 }

@@ -51,9 +51,14 @@
 		<dict value="com.thinkgem.jeesite.modules.bank.entity.FsBank" label="FsBank"/>
 		<dict value="com.thinkgem.jeesite.modules.project.entity.FsProject" label="fsProject"/>
 		<dict value="com.thinkgem.jeesite.modules.project.entity.FsSubproject" label="fsSubproject"/>
-		<dict value="com.thinkgem.jeesite.modules.good.entity.FsGoodCategory" label="FsGoodCategory"/>
-		<dict value="com.thinkgem.jeesite.modules.cooperation.entity.FsGoodCooperation" label="fsGoodCooperation"/>
+		<dict value="com.thinkgem.jeesite.modules.material.entity.FsMaterialSupplierinfo" label="fsMaterialSupplierinfo"/>
+		<!--<dict value="com.thinkgem.jeesite.modules.good.entity.FsGoodCategory" label="FsGoodCategory"/>-->
+		<!--<dict value="com.thinkgem.jeesite.modules.cooperation.entity.FsGoodCooperation" label="fsGoodCooperation"/>-->
 		<dict value="com.thinkgem.jeesite.modules.material.entity.FsMaterialWarehouseinfo" label="fsMaterialWarehouseinfo"/>
+		<dict value="com.thinkgem.jeesite.modules.material.entity.FsMaterialPurchasingorder" label="fsMaterialPurchasingorder"/>
+		<dict value="com.thinkgem.jeesite.modules.material.entity.FsMaterialPurchasingorderlist" label="fsMaterialPurchasingorderlist"/>
+		<dict value="com.thinkgem.jeesite.modules.material.entity.FsMaterialReceivedorder" label="fsMaterialReceivedorder"/>
+		<dict value="com.thinkgem.jeesite.modules.good.entity.FsGood" label="fsGood"/>
 		<dict value="com.thinkgem.jeesite.modules.specimen.entity.FsSpecimenin" label="fsSpecimenin"/>
 		<dict value="com.thinkgem.jeesite.modules.task.entity.FsExtractionDetectionTask" label="fsExtractionDetectionTask"/>
 		<dict value="This" label="ThisObj" description="生成当前对象"/>

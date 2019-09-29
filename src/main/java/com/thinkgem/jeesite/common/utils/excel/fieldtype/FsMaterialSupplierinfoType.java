@@ -1,32 +1,27 @@
 package com.thinkgem.jeesite.common.utils.excel.fieldtype;
 
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.bank.entity.FsBank;
-import com.thinkgem.jeesite.modules.bank.service.FsBankService;
+import com.thinkgem.jeesite.modules.material.entity.FsMaterialSupplierinfo;
 import com.thinkgem.jeesite.modules.sys.utils.MaterialUtils;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * @ProjectName: jeesite
  * @Package: com.thinkgem.jeesite.common.utils.excel.fieldtype
- * @ClassName: FsBankType
+ * @ClassName: FsMaterialSupplierinfoType
  * @Author: Administrator
  * @Description: ${description}
- * @Date: 2019/8/27 10:39
+ * @Date: 2019/8/27 15:01
  * @Version: 1.0
  */
-public class FsBankType {
+public class FsMaterialSupplierinfoType {
 
     /**
      * 获取对象值（导入）
      */
     public static Object getValue(String val) {
 
-        for (FsBank e : MaterialUtils.getFsBanks()){
-            if (StringUtils.trimToEmpty(val).equals(e.getOpenBank())){
+        for (FsMaterialSupplierinfo e : MaterialUtils.getFsMaterialSupplierinfos()){
+            if (StringUtils.trimToEmpty(val).equals(e.getName())){
                 return e;
             }
         }
@@ -37,11 +32,10 @@ public class FsBankType {
      * 设置对象值（导出）
      */
     public static String setValue(Object val) {
-        if (val != null && ((FsBank)val).getOpenBank() != null){
-            return ((FsBank)val).getOpenBank();
+        if (val != null && ((FsMaterialSupplierinfo)val).getName() != null){
+            return ((FsMaterialSupplierinfo)val).getName();
         }
         return "";
     }
-
 
 }

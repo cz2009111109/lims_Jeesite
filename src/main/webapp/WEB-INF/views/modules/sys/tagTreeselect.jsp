@@ -47,11 +47,13 @@
 			}
 		}
 		$(document).ready(function(){
-			$.get("${ctx}${url}${fn:indexOf(url,'?')==-1?'?':'&'}&extId=${extId}&isAll=${isAll}&module=${module}&t="
+			$.get("${ctx}${url}${fn:indexOf(url,'?')==-1?'?':'&'}&extId=${extId}&isAll=${isAll}&module=${module}&isShowAll=${isShowAll}&t="
 					+ new Date().getTime(), function(zNodes){
 				// 初始化树结构
 				tree = $.fn.zTree.init($("#tree"), setting, zNodes);
-                //tree.expandAll(true); //设置是否展开所有
+                if("${isShowAll}" == "true"){
+                    tree.expandAll(true); //设置是否展开所有
+				}
 				// 默认展开一级节点
 				var nodes = tree.getNodesByParam("level", 0);
 				for(var i=0; i<nodes.length; i++) {

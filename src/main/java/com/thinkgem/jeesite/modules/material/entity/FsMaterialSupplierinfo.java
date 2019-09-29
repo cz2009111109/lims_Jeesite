@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.material.entity;
 
+import com.thinkgem.jeesite.common.supcan.annotation.treelist.cols.SupCol;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.modules.bank.entity.FsBank;
 
@@ -34,7 +36,15 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 		super(id);
 	}
 
+	@SupCol(isUnique="true", isHide="true")
+	@ExcelField(title="ID", type=1, align=2, sort=1)
+	@Override
+	public String getId() {
+		return super.getId();
+	}
+
 	@Length(min=0, max=50, message="供应商编号长度必须介于 0 和 50 之间")
+	@ExcelField(title="供应商编号", align=2, sort=10)
 	public String getSuppCode() {
 		return suppCode;
 	}
@@ -44,6 +54,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=200, message="供货商名称长度必须介于 0 和 200 之间")
+	@ExcelField(title="供货商名称", align=2, sort=20)
 	public String getName() {
 		return name;
 	}
@@ -53,6 +64,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=100, message="简写长度必须介于 0 和 100 之间")
+	@ExcelField(title="简写", align=2, sort=30)
 	public String getSuppAbbre() {
 		return suppAbbre;
 	}
@@ -62,6 +74,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=20, message="供应商联系人长度必须介于 0 和 20 之间")
+	@ExcelField(title="供应商联系人", align=2, sort=40)
 	public String getPersonname() {
 		return personname;
 	}
@@ -71,6 +84,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=20, message="手机电话长度必须介于 0 和 20 之间")
+	@ExcelField(title="手机电话", align=2, sort=50)
 	public String getMobilephonne() {
 		return mobilephonne;
 	}
@@ -80,6 +94,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=20, message="座机长度必须介于 0 和 20 之间")
+	@ExcelField(title="座机", align=2, sort=60)
 	public String getTelephone() {
 		return telephone;
 	}
@@ -89,6 +104,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=200, message="邮箱长度必须介于 0 和 200 之间")
+	@ExcelField(title="邮箱", align=2, sort=70)
 	public String getEmail() {
 		return email;
 	}
@@ -98,6 +114,7 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	}
 	
 	@Length(min=0, max=200, message="地址长度必须介于 0 和 200 之间")
+	@ExcelField(title="地址", align=2, sort=80)
 	public String getAddress() {
 		return address;
 	}
@@ -105,7 +122,8 @@ public class FsMaterialSupplierinfo extends DataEntity<FsMaterialSupplierinfo> {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
+	@ExcelField(title="发票抬头", align=2, sort=90)
 	public FsBank getBank() {
 		return bank;
 	}

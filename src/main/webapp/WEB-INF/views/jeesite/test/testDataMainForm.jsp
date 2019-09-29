@@ -29,11 +29,11 @@
                             data: formData,
                             processData : false, // 使数据不做处理
                             contentType : false, // 不要设置Content-Type请求头
-                            success: function(data){
-                                console.log(data);
+                            success: function(response){
+                                console.log(response);
                                 var childdata = ${fns:toJson(testDataMain.testDataChildList)};
-                                for (var i=childdata.length; i<childdata.length+data.data.length; i++){
-                                    addRow('#testDataChildList', testDataChildRowIdx, testDataChildTpl, data.data[i]);
+                                for (var i=0; i<response.data.length; i++){
+                                    addRow('#testDataChildList', testDataChildRowIdx, testDataChildTpl, response.data[i]);
                                     testDataChildRowIdx = testDataChildRowIdx + 1;
                                 }
                             },

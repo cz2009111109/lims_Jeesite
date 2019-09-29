@@ -103,8 +103,9 @@ public class FsMaterialWarehouseinfoController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/material/fsMaterialWarehouseinfo/?repage";
 	}
 
-	@ResponseBody
+
 	@RequestMapping(value = "treeData")
+	@ResponseBody
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<FsMaterialWarehouseinfo> list = fsMaterialWarehouseinfoService.findList(new FsMaterialWarehouseinfo());

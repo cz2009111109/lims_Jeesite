@@ -13,6 +13,7 @@
 		a.email AS "email",
 		a.address AS "address",
 		a.bank AS "bank.id",
+		b.open_bank AS "bank.openBank",
 		b.open_bank AS "fsBank.openBank",
 		a.remarks AS "remarks",
 		a.create_by AS "createBy.id",

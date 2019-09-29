@@ -4,6 +4,8 @@
 package com.thinkgem.jeesite.common.utils;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -66,6 +68,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 */
 	public static String getDateTime() {
 		return formatDate(new Date(), "yyyy-MM-dd HH:mm:ss");
+	}
+
+	public static Date getSelfDateTime(long time) {
+		return  new Date(System.currentTimeMillis()+time);
 	}
 
 	/**
@@ -169,7 +175,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long afterTime = after.getTime();
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
 	}
-	
+
+	/*
+	 * @author chenzhe
+	 * @creed: Talk is cheap,show me the code
+	 * @date 2019/8/28 9:29
+	 * 生成流水号
+	 *
+	 * @return
+	 */
+
+	public static String NowDateNumber(String str){
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");//设置日期格式
+		String newsNo =str + LocalDateTime.now().format(fmt);
+		return newsNo;
+	}
+
 	/**
 	 * @param args
 	 * @throws ParseException
